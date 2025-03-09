@@ -1,9 +1,18 @@
 import React from 'react';
 import { CirclePlus, Download } from 'lucide-react';
 import Table from './components/Table';
+import { useModal } from './contexts/ModalContext';
+import AddItem from './components/Modals/AddItem';
 
 function App() {
-  const ipcHandle = () => window.electron.ipcRenderer.send('ping')
+  // const ipcHandle = () => window.electron.ipcRenderer.send('ping')
+  const { isOpen, setIsOpen } = useModal();
+
+  const handleOpenAddItemModal = () => {
+    console.log('open modal')
+    setIsOpen(true);
+    console.log(isOpen)
+   }
 
   return (
     <>
@@ -15,7 +24,7 @@ function App() {
               <button
                 className='flex items-center bg-black hover:bg-gray-800 py-2 px-4 
                 rounded-md gap-2 font-medium text-white transition duration-400'
-                onClick={ipcHandle}
+                onClick={handleOpenAddItemModal}
               >
                 <CirclePlus className='h-4 w-4' />
                 Add Item
@@ -32,6 +41,7 @@ function App() {
           </div>
         </div>
       </div>
+      <AddItem />
     </>
   )
 }
