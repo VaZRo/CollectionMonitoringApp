@@ -1,6 +1,6 @@
 import React from 'react';
 import { CirclePlus, Download } from 'lucide-react';
-import Table from './components/Table';
+import Table from './components/Table/Table';
 import { useModal } from './contexts/ModalContext';
 import AddItem from './components/Modals/AddItem';
 

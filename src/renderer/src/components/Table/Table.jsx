@@ -1,6 +1,7 @@
 import React from 'react';
-import ButtonFilter from './ButtonFilter';
+import ButtonFilter from '../ButtonFilter';
 import { ArrowDownUp } from 'lucide-react';
+import TableItem from './TableItem';
 
 
 export default function Table() {
@@ -32,17 +33,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody className='border-t border-gray-200 hover:bg-gray-100 transition duration-400 ease-in-out'>
-          <tr>
-            <th className="font-medium">0</th>
-            <th className="font-medium">Name 1</th>
-            <th className="font-medium">Discription 1</th>
-            <th className="font-medium">Quantity 1</th>
-            <th className="font-medium">100</th>
-            <th>
-              <button>Edit</button>
-              <button>Delete</button>
-            </th>
-          </tr>
+          <TableItem id={1} name={'Item 1'} description={'Description 1'} quantity={1} price={100} />
         </tbody>
       </table>
     </div>
