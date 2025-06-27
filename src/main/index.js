@@ -2,6 +2,27 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import sqlite3 from 'sqlite3'
+import { open } from 'sqlite'
+
+let db;
+
+async function initDatabase() {
+  db = await open({
+    filename: './collection.db',
+    driver: sqlite3.Database
+  });
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS collections (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      description TEXT,
+      quantity INTEGER NOT NULL DEFAULT 1,
+      price REAL NOT NULL DEFAULT 0.0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+}
 
 function createWindow() {
   // Create the browser window.
@@ -13,6 +34,7 @@ function createWindow() {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
+      contextIsolation: true,
       sandbox: false
     }
   })
@@ -38,9 +60,11 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
+
+  await initDatabase();
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -51,6 +75,17 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+  ipcMain.handle('db:add-collections', async (event, item) => {
+    const { name, description, quantity, price } = item;
+    await db.run(
+      'INSERT INTO collections (name, description, quantity, price) VALUES (?, ?, ?, ?)',
+      [name, description, quantity, price]
+    )
+  })
+
+  ipcMain.handle('db:get-collections', async () => {
+    return db.all('SELECT * FROM collections')
+  })
 
   createWindow()
 

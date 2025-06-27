@@ -5,6 +5,7 @@ import { useModal } from './contexts/ModalContext';
 import AddItem from './components/Modals/AddItem';
 
 function App() {
+
   // const ipcHandle = () => window.electron.ipcRenderer.send('ping')
   const { isOpen, setIsOpen } = useModal();
 
@@ -12,7 +13,18 @@ function App() {
     console.log('open modal')
     setIsOpen(true);
     console.log(isOpen)
-   }
+  }
+
+  const handleTestDb = async () => {
+    // await window.api.addCollection({
+    //   name: 'Test Item',
+    //   description: 'This is a test item',
+    //   quantity: 10,
+    //   price: 100.45
+    // });
+    const collections = await window.api.getCollections();
+    console.log(collections);
+  }
 
   return (
     <>
@@ -33,8 +45,13 @@ function App() {
                 <Download className='h-4 w-4' />
                 Export to Exel
               </button>
+              <button
+                className='flex items-center py-2 px-4 rounded-md gap-2 font-medium text-blue-400 border border-blue-200'
+                onClick={handleTestDb}
+              >
+                Test DB
+              </button>
             </div>
-
           </div>
           <div>
             <Table />
