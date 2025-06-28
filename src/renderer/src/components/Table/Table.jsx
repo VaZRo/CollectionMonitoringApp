@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ButtonFilter from '../ButtonFilter';
+import { useModal } from '../../contexts/ModalContext';
 import { ArrowDownUp } from 'lucide-react';
 import TableItem from './TableItem';
 
 
 export default function Table() {
+  const [collections, setCollections] = useState([]);
+  const { isOpen, setIsOpen } = useModal();
+  useEffect(() => {
+    const fetchCollections = async () => {
+      const collections = await window.api.getCollections();
+      setCollections(collections);
+      console.log(collections);
+    }
+    fetchCollections();
+  }, [isOpen])
+
   return (
     <div className="border border-gray-200 rounded-md shadow-xs">
       <table className='w-full table-auto'>
@@ -33,7 +45,15 @@ export default function Table() {
           </tr>
         </thead>
         <tbody className='border-t border-gray-200 hover:bg-gray-100 transition duration-400 ease-in-out'>
-          <TableItem id={1} name={'Item 1'} description={'Description 1'} quantity={1} price={100} />
+          {collections.map((item, index) => (
+            <TableItem
+              id={item.id}
+              name={item.name}
+              description={item.description}
+              quantity={item.quantity}
+              price={item.price} />
+          ))}
+
         </tbody>
       </table>
     </div>
