@@ -7,15 +7,17 @@ import TableItem from './TableItem';
 
 export default function Table() {
   const [collections, setCollections] = useState([]);
-  const { isOpen, setIsOpen } = useModal();
+  const { modals } = useModal();
+
+  const fetchCollections = async () => {
+    const collections = await window.api.getCollections();
+    setCollections(collections);
+    console.log(collections);
+  }
+
   useEffect(() => {
-    const fetchCollections = async () => {
-      const collections = await window.api.getCollections();
-      setCollections(collections);
-      console.log(collections);
-    }
     fetchCollections();
-  }, [isOpen])
+  }, [modals])
 
   return (
     <div className="border border-gray-200 rounded-md shadow-xs">
@@ -51,9 +53,10 @@ export default function Table() {
               name={item.name}
               description={item.description}
               quantity={item.quantity}
-              price={item.price} />
+              price={item.price}
+              onDeleted={fetchCollections}
+              key={index} />
           ))}
-
         </tbody>
       </table>
     </div>

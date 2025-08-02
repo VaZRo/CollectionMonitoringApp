@@ -3,7 +3,7 @@ import { useModal } from '../../contexts/ModalContext';
 import Modal from './Modal';
 
 export default function AddItem() {
-  const { isOpen, setIsOpen } = useModal();
+  const { modals, closeModal } = useModal();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -12,7 +12,7 @@ export default function AddItem() {
   });
 
   const closeForm = () => {
-    setIsOpen(false);
+    closeModal('addItem');
   }
 
   const handleInput = (e) => {
@@ -39,7 +39,7 @@ export default function AddItem() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!FormData.name) return;
+    if (!formData.name) return;
     try {
       await window.api.addCollection(formData);
       closeForm();
@@ -56,7 +56,7 @@ export default function AddItem() {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={closeForm}>
+    <Modal isOpen={modals.addItem} onClose={closeForm}>
       <form className='p-2' onSubmit={handleSubmit} >
         <h1 className='font-medium text-xl'>Add New Item</h1>
         <p className='text-gray-400 font-normal mt-1'>Add a new item to monitor here</p>
@@ -94,7 +94,7 @@ export default function AddItem() {
                 className='w-full border border-gray-200 rounded-md p-2'
                 min={1}
                 value={formData.quantity}
-                onInput={handleInput}
+                onChange={handleInput}
                 required
               />
             </div>
@@ -106,7 +106,7 @@ export default function AddItem() {
                 className='w-full border border-gray-200 rounded-md p-2'
                 min={0}
                 value={formData.price}
-                onInput={handleInput}
+                onChange={handleInput}
                 required
               />
             </div>

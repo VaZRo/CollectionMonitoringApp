@@ -3,16 +3,15 @@ import { CirclePlus, Download } from 'lucide-react';
 import Table from './components/Table/Table';
 import { useModal } from './contexts/ModalContext';
 import AddItem from './components/Modals/AddItem';
+import EditItemModal from './components/Modals/EditItemModal';
 
 function App() {
-
-  // const ipcHandle = () => window.electron.ipcRenderer.send('ping')
-  const { isOpen, setIsOpen } = useModal();
+  
+  const { openModal } = useModal();
 
   const handleOpenAddItemModal = () => {
-    console.log('open modal')
-    setIsOpen(true);
-    console.log(isOpen)
+    console.log('open modal');
+    openModal('addItem');
   }
 
   const handleTestDb = async () => {
@@ -59,6 +58,7 @@ function App() {
         </div>
       </div>
       <AddItem />
+      <EditItemModal />
     </>
   )
 }

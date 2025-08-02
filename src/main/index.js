@@ -86,6 +86,18 @@ app.whenReady().then(async () => {
   ipcMain.handle('db:get-collections', async () => {
     return db.all('SELECT * FROM collections')
   })
+  
+  ipcMain.handle('db:delete-collection', async (event, id) => {
+    await db.run('DELETE FROM collections WHERE id = ?', [id]);
+  })
+
+  ipcMain.handle('db:edit-collection', async (event, item) => {
+    const { id, name, description, quantity, price } = item;
+    await db.run(
+      'UPDATE collections SET name = ?, description = ?, quantity = ?, price = ? WHERE id = ?',
+      [name, description, quantity, price, id]
+    );
+  })
 
   createWindow()
 

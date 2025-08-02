@@ -5,6 +5,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {
   addCollection: (item) => ipcRenderer.invoke('db:add-collections', item),
   getCollections: () => ipcRenderer.invoke('db:get-collections'),
+  deleteCollection: (id) => ipcRenderer.invoke('db:delete-collection', id),
+  editCollection: (item) => ipcRenderer.invoke('db:edit-collection', item),
   ping: () => ipcRenderer.invoke('ping'), 
 }
 
