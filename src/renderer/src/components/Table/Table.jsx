@@ -12,6 +12,8 @@ export default function Table() {
   const [sortField, setSortField] = useState('id');
   const [sortOrder, setSortOrder] = useState('asc'); // 'asc' | 'desc'
 
+  // do sort by alphabet
+
   const fetchCollections = async () => {
     try {
       const data = await window.api.getCollections();
@@ -26,7 +28,7 @@ export default function Table() {
     fetchCollections();
   }, [modals?.addItem, modals?.editItem]);
 
-  // how it works?
+
   const sortedCollections = useMemo(() => {
     return [...collections].sort((a, b) => {
       if (sortOrder === 'asc') {
@@ -41,11 +43,11 @@ export default function Table() {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     } else {
       setSortField(field);
-      setSortOrder('asc');
+      // setSortOrder('asc');
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     }
   };
 
-  // Сделать, что бы направление стрелки менялось
   return (
     <div className="border border-gray-200 rounded-md shadow-xs">
       <table className='w-full table-auto'>
