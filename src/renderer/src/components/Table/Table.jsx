@@ -50,7 +50,15 @@ export default function Table() {
 
   return (
     <div className="border border-gray-200 rounded-md shadow-xs">
-      <table className='w-full table-auto'>
+      <table className='w-full table-fixed' style={{ tableLayout: 'fixed' }}>
+        <colgroup>
+          <col className='w-[8%]' />
+          <col className='w-[20%]' />
+          <col className='w-[30%]' />
+          <col className='w-[12%]' />
+          <col className='w-[12%]' />
+          <col />
+        </colgroup>
         <thead className="text-gray-400 hover:bg-gray-100 transition duration-400 ease-in-out">
           <tr>
             <th className="font-medium py-2 cursor-pointer" onClick={() => handleSort('id')}>

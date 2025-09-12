@@ -16,7 +16,7 @@ export default function TableItem({ id, name, description, quantity, price, onDe
     }
 
     return (
-        <tr className=''>
+        <tr>
             <th className="font-medium py-3">{id}</th>
             <th className="font-medium py-3">{name}</th>
             <th className="font-medium py-3">{description}</th>
